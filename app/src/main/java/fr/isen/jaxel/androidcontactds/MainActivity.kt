@@ -11,6 +11,7 @@ import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import fr.isen.jaxel.androidcontactds.model.Results
 import fr.isen.jaxel.androidcontactds.databinding.ActivityMainBinding
+import fr.isen.jaxel.androidcontactds.model.Data
 import fr.isen.jaxel.androidcontactds.model.DataResult
 import org.json.JSONObject
 
@@ -18,7 +19,6 @@ import org.json.JSONObject
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var contactsList = ArrayList<Results>()
-    private lateinit var contact: String
     private lateinit var myCategoryAdapter : ContactAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,16 +39,15 @@ class MainActivity : AppCompatActivity() {
 
         binding.contactList.layoutManager = LinearLayoutManager(this)
 
-        loadContactsfromApi()
+        loadContactsFromApi()
 
     }
 
-    private fun loadContactsfromApi(){
+    private fun loadContactsFromApi(){
         val url = "https://randomuser.me/api/?results=10&nat=fr"
         val jsonObject = JSONObject()
-        jsonObject.put("id_shop", "1")
         val jsonRequest = JsonObjectRequest(
-            Request.Method.POST, url, jsonObject,
+            Request.Method.GET, url, jsonObject,
             {
                 Log.w("MainActivity", "response : $it")
                 handleAPIData(it.toString())
@@ -60,14 +59,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleAPIData(data: String){
-        var contactsResult = Gson().fromJson(data, DataResult::class.java)
-        val dishCategory = contactsResult.data.firstOrNull { it.results.toString() == contact }
+        val contactsResult = Gson().fromJson(data, DataResult::class.java)
         val adapter = binding.contactList.adapter as ContactAdapter
-        adapter.refreshList(dishCategory?.results as ArrayList<Results>)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("MainActivity", "L'activité Main a été détruite")
+        //je ne suis pas arrivé à convertir ce que l'API envoit en ArrayList<Results>
+        //adapter.refreshList(contactsResult as ArrayList<Results>)
     }
 }

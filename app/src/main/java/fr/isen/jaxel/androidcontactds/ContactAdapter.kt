@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import fr.isen.jaxel.androidcontactds.model.DataResult
 import fr.isen.jaxel.androidcontactds.model.Results
 
 internal class ContactAdapter(private var myArrayList: ArrayList<Results>, val onContactClickListener: () -> Unit) : RecyclerView.Adapter<ContactAdapter.MyViewHolder>() {
@@ -31,12 +31,11 @@ internal class ContactAdapter(private var myArrayList: ArrayList<Results>, val o
                 .placeholder(R.drawable.contact)
                 .into(holder.contentImage)
         }
-        /*
         holder.contactView.setOnClickListener {
             onContactClickListener()
         }
 
-         */*/
+         */
     }
 
     override fun getItemCount(): Int = myArrayList.size
